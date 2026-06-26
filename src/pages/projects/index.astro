@@ -1,3 +1,8 @@
+---
+import { getCollection } from 'astro:content';
+const projects = await getCollection('projects');
+---
+
 <!DOCTYPE html><html lang="tr"><head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -10,8 +15,7 @@
     <!-- Favicon Icon -->
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
     <!-- Google Fonts -->
-    <link href="/https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">    
     <!-- Font Awesome -->
     <link rel="stylesheet" href="/css/fontawesome-5.14.0.min.css">
     <!-- Bootstrap -->
@@ -139,28 +143,49 @@
                         <a class="nav-link">HOTEL</a>
                     </li>
                 </ul>
-                <div class="tab-content tab-pane project-active">
-                    <div class="col-lg-12 item HOUSE HOTEL">
-                        <div class="row apartment-image wow fadeInLeft delay-0-1s">
-                            <a href="/project-details.html"><img src="/images/1.jpg" alt="Apartment"></a>
-                            <div class="carousel-caption d-md-block">
-                                <span class="sub-title mb-16">HOTEL</span>
-                                <a href="/project-details.html"><h5 class="mb-32">Beautiful Modern Hotel Design 2024</h5></a>
-                                <p class="mb-32">We have several strategic teaming arrangements  with experienced to complete full design services.</p>
-                                <div>
-                                    <a href="/project-details.html" class="hero-btn ">Read More
-                                        <span class="btn-icon">
-                                            <span class="circle"></span>
-                                            <span class="dot"></span>
-                                            <span class="line"></span>
-                                            <span class="fa fa-long-arrow-right"></span>
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>                     
-                    </div>
-                    <div class="col-sm-6 col-lg-6 item VILLA">
+<div class="tab-content tab-pane project-active">
+  {projects.map((project, index) => {
+    const data = project.data;
+    const slug = project.id.replace(/\.md$/, '');
+    const sizeClass = index % 3 === 0 ? 'col-lg-12' : 'col-sm-6 col-lg-6';
+
+    return (
+      <div class={`${sizeClass} item HOUSE`}>
+        <div class="row apartment-image wow fadeInLeft delay-0-1s">
+          <a href={`/projects/${slug}/`}>
+            <img src={data.cover} alt={data.title} />
+          </a>
+
+          <div class="carousel-caption d-md-block">
+            <span class="sub-title mb-16">{data.category}</span>
+
+            <a href={`/projects/${slug}/`}>
+              <h5 class="mb-32">{data.title}</h5>
+            </a>
+
+            <p class="mb-32">{data.description}</p>
+
+            <div>
+              <a href={`/projects/${slug}/`} class="hero-btn">
+                İncele
+                <span class="btn-icon">
+                  <span class="circle"></span>
+                  <span class="dot"></span>
+                  <span class="line"></span>
+                  <span class="fa fa-long-arrow-right"></span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
+
+
+<div class="col-sm-6 col-lg-6 item VILLA">
                         <div class="row apartment-image wow fadeInLeft delay-0-1s">
                             <a href="/project-details.html"><img src="/images/2.jpg" alt="Apartment"></a>
                             <div class="carousel-caption d-md-block">
